@@ -8,11 +8,12 @@ game = {
          this.$thirdLine
       ])
       this.gameButtonsSelector()
-      this.bindEvents()
+      this.bindChoose()
+      this.clickReset()
 
    },
 
-   bindEvents: function() {
+   bindChoose: function() {
       for (let div of this.$divs) {
          div.addEventListener('click', event => {
             if (!this.finish) {
@@ -33,10 +34,22 @@ game = {
       }
    },
 
+   clickReset: function() {
+      this.$liReset.addEventListener('click', () => {
+         this.listGame = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+         this.$nameVictory.innerText = ''
+         document.location.reload()
+
+         return
+      })
+   },
+
    casheSelectors: function() {
       this.$firstLine = document.querySelector('#first-line')
       this.$secondLine = document.querySelector('#second-line')
       this.$thirdLine = document.querySelector('#third-line')
+      this.$nameVictory = document.querySelector('#victory')
+      this.$liReset = document.querySelector('#reset')
    },
 
    gameButtonsSelector: function() {
@@ -50,9 +63,9 @@ game = {
       let count = 0
       for (let value of values) {
          value.innerHTML += `
-            <div id='divGame' class='game' data-value="${count+1}"></div>
-            <div id='divGame' class='game' data-value="${count+2}"></div>
-            <div id='divGame' class='game' data-value="${count+3}"></div>
+            <div id='divGame' class='game d${count+1}' data-value="${count+1}"></div>
+            <div id='divGame' class='game d${count+2}' data-value="${count+2}"></div>
+            <div id='divGame' class='game d${count+3}' data-value="${count+3}"></div>
          `
          count += 3
       }
@@ -97,13 +110,14 @@ game = {
       }
 
       if (end) {
-         
+
          return true
       }
    },
 
    gameFinish: function() {
       this.finish = true
+      this.$nameVictory.innerText = `O jogador [${this.actual}] venceu!!!`
    }
 }
 
